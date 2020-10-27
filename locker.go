@@ -1,14 +1,16 @@
 package distributelock
 
-import "github.com/go-redis/redis"
+import (
+	"github.com/go-redis/redis"
+)
 
-type Loker interface {
+type Locker interface {
 	Lock() error
 	UnLock()
 }
 
-
-func NewRedisLock(cli *redis.Client, key string, configers ...configer) Loker {
+// AP场景的分布式锁
+func NewRedisLock(cli *redis.Client, key string, configers ...configer) Locker {
 	cnf := new(config)
 	cnf.setDefault()
 
@@ -18,3 +20,4 @@ func NewRedisLock(cli *redis.Client, key string, configers ...configer) Loker {
 
 	return newRedisLock(cli, key, cnf)
 }
+
